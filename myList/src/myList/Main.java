@@ -14,7 +14,7 @@ public class Main {
 		list.add("7");
 		list.add("8");
 		list.remove("3");
-		list.removeIndex(5);
+		list.removeIndex(4);
 		boolean result = list.contains("1");
 		System.out.println(result);
 		boolean result1 = list.contains("23");
