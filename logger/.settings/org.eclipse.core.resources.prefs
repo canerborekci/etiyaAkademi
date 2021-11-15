@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/logger/DatabaseLogger.java=UTF-8
+encoding//src/logger/EmailLogger.java=UTF-8
+encoding//src/logger/FileLogger.java=UTF-8
+encoding//src/logger/Main.java=UTF-8
