@@ -4,6 +4,11 @@ package northwind.business.concretes;
 import java.util.List;
 
 import northwind.business.abstracts.ProductService;
+import northwind.core.utilities.results.DataResult;
+import northwind.core.utilities.results.ErrorResult;
+import northwind.core.utilities.results.Result;
+import northwind.core.utilities.results.SuccessDataResult;
+import northwind.core.utilities.results.SuccessResult;
 import northwind.dataAccess.abstracts.ProductRepository;
 import northwind.entities.concretes.Product;
 
@@ -18,35 +23,34 @@ public class ProductManager implements ProductService {
 	}
 
 	@Override
-	public List<Product> GetAll() {
-		// TODO Auto-generated method stub
-		return this.productRepository.getAll();
+	public DataResult<List<Product>> getAll() {
+		return new SuccessDataResult<List<Product>>(this.productRepository.getAll());
 	}
+
 
 	@Override
-	public void add(Product product) {
-		boolean verify = true;
-
-		verify = checkProductName(product);
-		verify = checkUnitPrice(product);
-		verify = checkbyCategoryIdandUnitPrice(product);
-		verify = checkCategoryCount(product);
-
-		if (verify) {
+	public Result add(Product product) {
+		if(checkIfProductNameExist(product.getProductName()).isSuccess()) {
 			this.productRepository.add(product);
+			return new SuccessResult("ürün eklendi");
+		}else {
+			return new ErrorResult("ürün eklenmedi");
 		}
+		
+		
+		
 
 	}
-
-	public boolean checkProductName(Product product) {
-		for (Product item : GetAll()) {
-			if (item.getProductName() == product.getProductName()) {
-				System.out.println("Aynı isim tekrar edemez.");
-				return false;
+	
+	
+	private Result checkIfProductNameExist(String productName) {
+		for(Product product : this.productRepository.getAll()) {
+			if(productName==product.getProductName()) {
+				return new Result(false,"Ürün ismi tekrar edemez.");
 			}
-		}
-		return true;
+		}return new SuccessResult();
 	}
+
 
 	public boolean checkUnitPrice(Product product) {
 		if (product.getUnitPrice() < 0) {
@@ -64,18 +68,20 @@ public class ProductManager implements ProductService {
 		return true;
 	}
 
-	public boolean checkCategoryCount(Product product) {
-		int count = 0;
-		for (Product item : GetAll()) {
-			if (product.getCategoryId() == item.getCategoryId()) {
-				count++;
-			}
-			if (count >= 5) {
-				System.out.println("Aynı kategoriye ait en fazla 5 ürün bulunabilir!");
-				return false;
-			}
-		}
-		return true;
-	}
+//	public boolean checkCategoryCount(int categoryId) {
+//		int count = 0;
+//		for (Product product : this.productRepository(.g)) {
+//			if (product.getCategoryId() == item.getCategoryId()) {
+//				count++;
+//			}
+//			if (count >= 5) {
+//				System.out.println("Aynı kategoriye ait en fazla 5 ürün bulunabilir!");
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
+
+
 
 }
