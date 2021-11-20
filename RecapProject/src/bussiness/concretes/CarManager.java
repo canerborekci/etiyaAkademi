@@ -29,6 +29,7 @@ public class CarManager implements CarService{
 	}
 	@Override
 	public Result delete(int id) {
+//		Car car = this.carRepository.getAll().stream().
 		int counter=0;
 		for (Car car : this.carRepository.getAll()) {
 			if(car.getId()==id) {
@@ -69,7 +70,7 @@ public class CarManager implements CarService{
 			
 			
 		}
-		return null;
+		return new ErrorDataResult<Car>(null,"araç bulunamadı");
 		
 	}
 
